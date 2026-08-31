@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاكاة توعوية - كشف آليات الاحتيال والعشوائية الخادعة</title>
+    <title>منصة المحاكاة والتوعية المالية</title>
     <style>
         * {
             box-sizing: border-box;
@@ -25,7 +25,7 @@
         .container {
             background-color: #1e1e1e;
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.6);
@@ -45,6 +45,41 @@
             border-radius: 6px;
         }
 
+        /* قسم تسجيل الدخول */
+        .login-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            background-color: #121212;
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .btn-action {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* الواجهة الرئيسية بعد الدخول */
+        .dashboard {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -60,39 +95,69 @@
             color: #2ecc71;
         }
 
-        .pending-amount {
-            font-size: 18px;
-            font-weight: bold;
-            color: #f39c12;
+        /* قسم شام كاش (إيداع وسحب) */
+        .banking-box {
+            background-color: #2a2a2a;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid #3d3d3d;
         }
 
+        .sham-title {
+            font-size: 13px;
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .bank-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-deposit {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-withdraw {
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* لعبة العجلة والطمع */
         .wheel-container {
             position: relative;
-            width: 290px;
-            height: 290px;
+            width: 250px;
+            height: 250px;
             margin: 10px auto;
         }
 
         .pointer {
             position: absolute;
-            top: -12px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 25px solid #ffcc00;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid #ffcc00;
             z-index: 10;
-        }
-
-        .wheel-outer-ring {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 8px solid #ffcc00;
-            position: relative;
-            overflow: hidden;
         }
 
         canvas {
@@ -100,40 +165,6 @@
             height: 100%;
             border-radius: 50%;
             transition: transform 4s cubic-bezier(0.15, 0.99, 0.18, 0.99);
-        }
-
-        .center-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 45px;
-            height: 45px;
-            background-color: #ffcc00;
-            border-radius: 50%;
-            border: 3px solid #ffffff;
-            z-index: 5;
-        }
-
-        .bet-control-box {
-            background-color: #2a2a2a;
-            padding: 12px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .bet-input-group input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #444;
-            background-color: #121212;
-            color: white;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            text-align: center;
         }
 
         .bet-multipliers {
@@ -159,191 +190,175 @@
         }
 
         .btn-spin {
-            background-color: #27ae60;
+            background-color: #8e44ad;
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-        }
-
-        .btn-spin:disabled {
-            background-color: #555;
-            cursor: not-allowed;
         }
 
         .result-box {
             background-color: #2a2a2a;
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            color: #2ecc71;
-            font-weight: bold;
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .result-box.loss {
-            color: #e74c3c;
-        }
-
-        .btn-take {
-            width: 100%;
-            padding: 12px;
-            border: none;
             border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: #f39c12;
-            color: white;
-        }
-
-        .btn-take:disabled {
-            background-color: #444;
-            color: #777;
-            cursor: not-allowed;
-        }
-
-        .live-feed-box {
-            background-color: #2a2a2a;
-            border-radius: 12px;
             padding: 10px;
-            max-height: 120px;
-            overflow-y: hidden;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            border: 1px solid #3b3b3b;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            min-height: 40px;
         }
 
-        .feed-title {
-            font-size: 11px;
-            color: #aaa;
-            margin-bottom: 2px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .feed-item {
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            background-color: #1a1a1a;
-            padding: 5px 8px;
-            border-radius: 6px;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .user-name { color: #3498db; font-weight: bold; }
-        .win-amount { color: #2ecc71; font-weight: bold; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .result-box.loss { color: #e74c3c; }
+        .result-box.win { color: #2ecc71; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="demo-badge">⚠️ نموذج توعوي لكشف آليات فخ المضاعفات والعشوائية المحكومة</div>
+    <div class="demo-badge">⚠️ محاكاة توعوية - كشف آليات فخ الخسارة والطمع</div>
 
-    <div class="header">
-        <div>
-            <div style="font-size: 11px; color: #aaa;">الرصيد الحقيقي</div>
-            <div class="balance-amount" id="balance">$ 100.00</div>
-        </div>
-        <div style="text-align: left;">
-            <div style="font-size: 11px; color: #aaa;">الأرباح المعلقة</div>
-            <div class="pending-amount" id="pending-win">$ 0.00</div>
-        </div>
+    <!-- 1. صفحة تسجيل الدخول -->
+    <div id="login-section" class="login-box">
+        <h3 style="text-align: center;">تسجيل الدخول للمنصة</h3>
+        <input type="text" id="username" class="input-field" placeholder="اسم المستخدم / رقم الهاتف">
+        <input type="password" id="password" class="input-field" placeholder="كلمة المرور">
+        <button class="btn-action" onclick="login()">دخول</button>
     </div>
 
-    <div class="wheel-container">
-        <div class="pointer"></div>
-        <div class="wheel-outer-ring">
-            <canvas id="wheel" width="290" height="290"></canvas>
-            <div class="center-circle"></div>
+    <!-- 2. الواجهة الرئيسية (تظهر بعد الدخول) -->
+    <div id="dashboard-section" class="dashboard">
+        
+        <div class="header">
+            <div>
+                <div style="font-size: 11px; color: #aaa;">الرصيد الحالي</div>
+                <div class="balance-amount" id="balance">$ 100.00</div>
+            </div>
+            <button style="background:none; border:none; color:#e74c3c; cursor:pointer;" onclick="logout()">خروج</button>
         </div>
-    </div>
 
-    <div class="bet-control-box">
-        <div style="font-size: 12px; color: #aaa;">اختر مبلغ الرهان الأساسي ($):</div>
-        <div class="bet-input-group">
-            <input type="number" id="custom-bet" value="10" min="1" oninput="resetMultiplierState()">
+        <!-- قسم عمليات شام كاش (إيداع وسحب بقيم متغيرة) -->
+        <div class="banking-box">
+            <div class="sham-title">💳 بنك Sham Cash (شام كاش)</div>
+            <input type="number" id="bank-amount" class="input-field" placeholder="أدخل المبلغ ($)" min="1" value="10">
+            <div class="bank-btns">
+                <button class="btn-deposit" onclick="handleDeposit()">إيداع</button>
+                <button class="btn-withdraw" onclick="handleWithdraw()">سحب</button>
+            </div>
         </div>
-        <div style="font-size: 11px; color: #aaa; margin-top: 4px;">مضاعفات سريعة (تزيد نسبة الخسارة):</div>
-        <div class="bet-multipliers">
-            <button class="btn-multiplier" id="m2" onclick="applyMultiplier(2, 'm2')">x2</button>
-            <button class="btn-multiplier" id="m4" onclick="applyMultiplier(4, 'm4')">x4</button>
-            <button class="btn-multiplier" id="m6" onclick="applyMultiplier(6, 'm6')">x6</button>
-            <button class="btn-multiplier" id="m8" onclick="applyMultiplier(8, 'm8')">x8</button>
-            <button class="btn-multiplier" id="m10" onclick="applyMultiplier(10, 'm10')">x10</button>
+
+        <!-- قسم العجلة (فخ الطمع) -->
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <canvas id="wheel" width="250" height="250"></canvas>
         </div>
-    </div>
 
-    <button class="btn-spin" id="spin-btn" onclick="executeSpin()">ادُر العجلة</button>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-size: 12px; color: #aaa;">مبلغ الرهان (من الرصيد):</div>
+            <input type="number" id="bet-amount" class="input-field" value="10" min="1" oninput="resetMultipliers()">
+            
+            <div style="font-size: 11px; color: #aaa;">أزرار الطمع والمضاعفات (تزيد فخ الخسارة 5/6):</div>
+            <div class="bet-multipliers">
+                <button class="btn-multiplier" id="m2" onclick="setMultiplier(2, 'm2')">x2</button>
+                <button class="btn-multiplier" id="m4" onclick="setMultiplier(4, 'm4')">x4</button>
+                <button class="btn-multiplier" id="m6" onclick="setMultiplier(6, 'm6')">x6</button>
+                <button class="btn-multiplier" id="m10" onclick="setMultiplier(10, 'm10')">x10</button>
+            </div>
 
-    <div class="result-box" id="result-box">
-        حدد الرهان واضغط "ادُر العجلة"
-    </div>
-
-    <button class="btn-take" id="claim-btn" onclick="claimPrize()" disabled>خذ الجائزة (سحب)</button>
-
-    <div class="live-feed-box">
-        <div class="feed-title">
-            <span>سجل أرباح اللاعبين الآن</span>
-            <span style="color: #2ecc71;">● مباشر</span>
+            <button class="btn-spin" id="spin-btn" onclick="spinWheel()">ادُر العجلة</button>
         </div>
-        <div id="feed-list"></div>
+
+        <div class="result-box" id="result-box">
+            أدخل الرهان واضغط ادُر العجلة
+        </div>
+
     </div>
 </div>
 
 <script>
-    // =========================================================
-    // 🎯 1. إعداد العجلة وإعطاء وزن عالي لنسب الربح الضئيلة (الفتات)
-    // =========================================================
+    let balance = 100.00;
+    let isSpinning = false;
+    let isMultiplierActive = false;
+
+    // قطاعات العجلة
     const sectors = [
-        { label: '5%',        type: 'win',  percentage: 5,   color: '#8e44ad', weight: 0.45 },   // الفتات (ربح ضئيل عالي الظهور)
-        { label: '8%',        type: 'win',  percentage: 8,   color: '#27ae60', weight: 0.35 },   // الفتات
-        { label: '10%',       type: 'win',  percentage: 10,  color: '#c0392b', weight: 0.15 },   // الفتات
-        { label: 'حظاً أوفر',  type: 'loss', percentage: 0,   color: '#7f8c8d', weight: 0.0496 }, // يرتفع وزنها تلقائياً عند المضاعفة
-        { label: '20%',       type: 'win',  percentage: 20,  color: '#2980b9', weight: 0.0001 }, 
-        { label: '50%',       type: 'win',  percentage: 50,  color: '#d35400', weight: 0.0001 }, 
-        { label: '100%',      type: 'win',  percentage: 100, color: '#f1c40f', weight: 0.0001 }, 
-        { label: '200%',      type: 'win',  percentage: 200, color: '#e67e22', weight: 0.0001 }  
+        { label: '5%', type: 'win', percentage: 5, color: '#8e44ad', weight: 0.5 },
+        { label: '10%', type: 'win', percentage: 10, color: '#27ae60', weight: 0.35 },
+        { label: 'حظاً أوفر', type: 'loss', percentage: 0, color: '#7f8c8d', weight: 0.14 },
+        { label: '200%', type: 'win', percentage: 200, color: '#e67e22', weight: 0.01 }
     ];
 
-    let balance = 100.00;       
-    let pendingWin = 0.00;      
-    let currentBet = 10.00;
-    let currentRotation = 0;
-    let isSpinning = false;
-    let isMultiplierActive = false; // متتبع ضغط زر المضاعفة
+    // 1. تسجيل الدخول
+    function login() {
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
 
+        if (user && pass) {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'flex';
+            drawWheel();
+            updateBalance();
+        } else {
+            alert('يرجى إدخال اسم المستخدم وكلمة المرور');
+        }
+    }
+
+    function logout() {
+        document.getElementById('dashboard-section').style.display = 'none';
+        document.getElementById('login-section').style.display = 'flex';
+    }
+
+    // 2. معالجة الإيداع والسحب عبر شام كاش بناءً على القيمة المدخلة في المربع
+    function handleDeposit() {
+        const amountInput = document.getElementById('bank-amount');
+        const val = parseFloat(amountInput.value);
+
+        if (isNaN(val) || val <= 0) {
+            alert('يرجى إدخال مبلغ صحيح للإيداع.');
+            return;
+        }
+
+        balance += val;
+        updateBalance();
+        alert(`تم إيداع $${val.toFixed(2)} عبر شام كاش بنجاح.`);
+    }
+
+    function handleWithdraw() {
+        const amountInput = document.getElementById('bank-amount');
+        const val = parseFloat(amountInput.value);
+
+        if (isNaN(val) || val <= 0) {
+            alert('يرجى إدخال مبلغ صحيح للسحب.');
+            return;
+        }
+
+        if (val > balance) {
+            alert('رصيدك غير كافٍ لإجراء السحب!');
+            return;
+        }
+
+        balance -= val;
+        updateBalance();
+        alert(`تم سحب $${val.toFixed(2)} إلى حساب شام كاش بنجاح.`);
+    }
+
+    function updateBalance() {
+        document.getElementById('balance').innerText = `$ ${balance.toFixed(2)}`;
+    }
+
+    // 3. خوارزمية العجلة والطمع
     const canvas = document.getElementById('wheel');
     const ctx = canvas.getContext('2d');
-    const spinBtn = document.getElementById('spin-btn');
-    const claimBtn = document.getElementById('claim-btn');
-    const resultBox = document.getElementById('result-box');
-    const betInput = document.getElementById('custom-bet');
-    const feedList = document.getElementById('feed-list');
-
-    const numSectors = sectors.length;
-    const arc = (2 * Math.PI) / numSectors;
+    let currentRotation = 0;
 
     function drawWheel() {
         const radius = canvas.width / 2;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const arc = (2 * Math.PI) / sectors.length;
 
         sectors.forEach((sector, i) => {
             const angle = i * arc;
-            
             ctx.beginPath();
             ctx.fillStyle = sector.color;
             ctx.moveTo(radius, radius);
@@ -351,166 +366,87 @@
             ctx.lineTo(radius, radius);
             ctx.fill();
 
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
             ctx.save();
             ctx.translate(radius, radius);
             ctx.rotate(angle + arc / 2);
             ctx.textAlign = 'right';
             ctx.fillStyle = '#ffffff';
-            ctx.font = sector.type === 'loss' ? 'bold 11px Arial' : 'bold 14px Arial';
-            ctx.fillText(sector.label, radius - 15, 4);
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText(sector.label, radius - 10, 4);
             ctx.restore();
         });
     }
 
-    // =========================================================
-    // 🧠 الخوارزمية العشوائية الموجهة (فخ المضاعفات 5 من 6)
-    // =========================================================
-    function getRandomSectorIndex() {
-        // إذا قام المراهن بضغط أحد أزرار المضاعفة (x2 إلى x10)
-        if (isMultiplierActive) {
-            // احتمال 5 من أصل 6 (أي ~83.3%) للوقوف على "حظاً أوفر" (الاندكس 3)
-            const isLossTrap = Math.random() < (5 / 6);
-            if (isLossTrap) {
-                return 3; // قطاع الخسارة وتصفية الأرباح
-            }
-        }
-
-        // في الحالة العشوائية العادية (أو عند نجاح احتمال 1 من 6 الناجي)
-        // يتم إجراء سحب عشوائي موزون يجعل الأرباح تنحصر في "الفتات" (5%, 8%, 10%)
-        const totalWeight = sectors.reduce((sum, s) => sum + s.weight, 0);
-        let randomVal = Math.random() * totalWeight;
-
-        for (let i = 0; i < numSectors; i++) {
-            if (randomVal < sectors[i].weight) {
-                return i;
-            }
-            randomVal -= sectors[i].weight;
-        }
-        return 0;
+    function setMultiplier(factor, btnId) {
+        resetMultipliers();
+        const betInput = document.getElementById('bet-amount');
+        betInput.value = 10 * factor;
+        isMultiplierActive = true;
+        document.getElementById(btnId).classList.add('active');
     }
 
-    function executeSpin() {
+    function resetMultipliers() {
+        isMultiplierActive = false;
+        document.querySelectorAll('.btn-multiplier').forEach(b => b.classList.remove('active'));
+    }
+
+    function spinWheel() {
         if (isSpinning) return;
 
-        currentBet = parseFloat(betInput.value) || 0;
+        const betVal = parseFloat(document.getElementById('bet-amount').value);
 
-        if (currentBet <= 0) {
-            alert('يرجى تحديد مبلغ رهان صحيح.');
+        if (isNaN(betVal) || betVal <= 0) {
+            alert('أدخل مبلغ رهان صحيح.');
             return;
         }
 
-        if (balance < currentBet) {
-            alert(`رصيدك غير كافٍ. اضغط سحب أو قلل قيمة الرهان.`);
+        if (betVal > balance) {
+            alert('رصيدك لا يكفي للرهان! قم بالإيداع عبر شام كاش.');
             return;
         }
 
-        balance -= currentBet;
+        balance -= betVal;
+        updateBalance();
 
         isSpinning = true;
-        spinBtn.disabled = true;
-        claimBtn.disabled = true;
-        betInput.disabled = true;
-        updateUI();
+        document.getElementById('spin-btn').disabled = true;
 
-        // حساب النتيجة وفق قواعد الاحتمالات الجديدة
-        const targetIndex = getRandomSectorIndex();
+        // خوارزمية الطمع: عند استخدام أزرار المضاعفة يكون احتمال الخسارة 5 من أصل 6 (83.3%)
+        let targetIndex;
+        if (isMultiplierActive && Math.random() < (5 / 6)) {
+            targetIndex = 2; // مؤشر "حظاً أوفر"
+        } else {
+            // اختيار عشوائي موزون (ربح القليل)
+            targetIndex = Math.random() < 0.8 ? 0 : 1;
+        }
 
-        const sectorDegree = 360 / numSectors;
+        const sectorDegree = 360 / sectors.length;
         const targetCenterDegree = (targetIndex * sectorDegree) + (sectorDegree / 2);
         const spins = 360 * 5;
         const degreesToStop = spins + (360 - targetCenterDegree) - 90;
-        
+
         currentRotation += (degreesToStop - (currentRotation % 360));
         canvas.style.transform = `rotate(${currentRotation}deg)`;
 
         setTimeout(() => {
             isSpinning = false;
-            spinBtn.disabled = false;
-            betInput.disabled = false;
+            document.getElementById('spin-btn').disabled = false;
+            const resBox = document.getElementById('result-box');
 
-            const selectedSector = sectors[targetIndex];
-
-            if (selectedSector.type === 'loss') {
-                pendingWin = 0; // مسح كافة الأرباح المعلقة كلياً
-                resultBox.classList.add('loss');
-                resultBox.innerHTML = `🚨 حظاً أوفر! سحبت الخوارزمية كل الأرباح والرهان ($${currentBet.toFixed(2)})`;
+            if (sectors[targetIndex].type === 'loss') {
+                resBox.className = 'result-box loss';
+                resBox.innerText = `🚨 خسرت الرهان ($${betVal.toFixed(2)})! طمع المضاعفات أدى لخسارتك.`;
             } else {
-                const profit = (currentBet * selectedSector.percentage) / 100;
-                pendingWin += currentBet + profit;
-                
-                resultBox.classList.remove('loss');
-                resultBox.innerHTML = `🎉 ربحت الفتات (${selectedSector.label})! تم إضافة ($${profit.toFixed(2)}) للأرباح المعلقة`;
-                claimBtn.disabled = false;
+                const profit = (betVal * sectors[targetIndex].percentage) / 100;
+                balance += betVal + profit;
+                resBox.className = 'result-box win';
+                resBox.innerText = `🎉 ربحت الفتات (${sectors[targetIndex].label}) +$${profit.toFixed(2)}`;
             }
 
-            // إعادة ضبط زر المضاعفة بعد انتهاء الدورة
-            resetMultiplierState();
-            updateUI();
+            resetMultipliers();
+            updateBalance();
         }, 4000);
     }
-
-    // =========================================================
-    // 🎛️ التعامل مع أزرار المضاعفة وتفعيل فخ الخسارة (5/6)
-    // =========================================================
-    function applyMultiplier(factor, btnId) {
-        if (isSpinning) return;
-        
-        resetMultiplierState();
-        
-        const baseValue = 10;
-        betInput.value = baseValue * factor;
-        isMultiplierActive = true;
-
-        document.getElementById(btnId).classList.add('active');
-    }
-
-    function resetMultiplierState() {
-        isMultiplierActive = false;
-        document.querySelectorAll('.btn-multiplier').forEach(btn => btn.classList.remove('active'));
-    }
-
-    function claimPrize() {
-        if (pendingWin > 0) {
-            balance += pendingWin;
-            alert(`تم سحب المبلغ المعلق ($${pendingWin.toFixed(2)}) بنجاح!`);
-            pendingWin = 0;
-            claimBtn.disabled = true;
-            resultBox.innerHTML = 'تم تحويل الأرباح للرصيد الرئيسي.';
-            updateUI();
-        }
-    }
-
-    function updateUI() {
-        document.getElementById('balance').innerText = `$ ${balance.toFixed(2)}`;
-        document.getElementById('pending-win').innerText = `$ ${pendingWin.toFixed(2)}`;
-    }
-
-    // سجل الأرباح الحية للطلاب (Social Proof)
-    const fakeUsers = ['أحمد_م.', 'Sami_99', 'Khaled_K', 'عمر_علي', 'User_882', 'Youssef_T'];
-    function generateFakeWin() {
-        const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-        const randomAmount = (Math.random() * 40 + 2).toFixed(2); // أرباح وهمية بسيطة لإيهام الطالب بالربح المستمر
-
-        const item = document.createElement('div');
-        item.className = 'feed-item';
-        item.innerHTML = `<span class="user-name">${randomUser}</span> <span class="win-amount">+$${randomAmount}</span>`;
-
-        feedList.insertBefore(item, feedList.firstChild);
-
-        if (feedList.children.length > 3) {
-            feedList.removeChild(feedList.lastChild);
-        }
-    }
-
-    setInterval(generateFakeWin, 3000);
-
-    drawWheel();
-    updateUI();
-    generateFakeWin();
 </script>
 
 </body>
